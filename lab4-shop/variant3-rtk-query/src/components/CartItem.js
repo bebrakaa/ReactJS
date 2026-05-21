@@ -3,21 +3,19 @@ import { removeFromCart, updateCartQuantity } from "../redux/slices/cartSlice";
 
 function CartItem({ item }) {
   const dispatch = useDispatch();
-
-  const handleQuantityChange = (newQuantity) => {
-    if (newQuantity < 1) return;
-    dispatch(updateCartQuantity({ productId: item.id, quantity: newQuantity }));
-  };
-
-  const handleRemove = () => {
-    dispatch(removeFromCart(item.id));
-  };
-
   const subtotal = item.price * item.quantity;
+
+  const handleQuantityChange = (value) => {
+    const quantity = Number(value);
+
+    if (Number.isInteger(quantity) && quantity >= 1) {
+      dispatch(updateCartQuantity({ productId: item.id, quantity }));
+    }
+  };
 
   return (
     <div className="cart-item">
-      <div className="cart-item-image-placeholder"></div>
+      <div className="cart-item-image-placeholder" />
 
       <div className="cart-item-info">
         <h3 className="cart-item-title">{item.title}</h3>
@@ -29,10 +27,18 @@ function CartItem({ item }) {
           <button
             onClick={() => handleQuantityChange(item.quantity - 1)}
             className="quantity-btn"
+            disabled={item.quantity <= 1}
           >
             −
           </button>
-          <span className="quantity-value">{item.quantity}</span>
+          <input
+            className="quantity-input"
+            type="number"
+            min="1"
+            value={item.quantity}
+            onChange={(event) => handleQuantityChange(event.target.value)}
+            aria-label={`Количество товара ${item.title}`}
+          />
           <button
             onClick={() => handleQuantityChange(item.quantity + 1)}
             className="quantity-btn"
@@ -43,12 +49,10 @@ function CartItem({ item }) {
 
         <div className="cart-item-subtotal">
           <span className="subtotal-label">Итого:</span>
-          <span className="subtotal-value">
-            {subtotal.toLocaleString("ru-RU")} ₽
-          </span>
+          <span className="subtotal-value">{subtotal.toLocaleString("ru-RU")} ₽</span>
         </div>
 
-        <button onClick={handleRemove} className="btn-remove">
+        <button onClick={() => dispatch(removeFromCart(item.id))} className="btn-remove">
           Удалить
         </button>
       </div>
