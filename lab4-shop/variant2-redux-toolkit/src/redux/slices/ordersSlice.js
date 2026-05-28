@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_URL } from "../../config/api";
 
-// Async thunks
 export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (orderData, { rejectWithValue }) => {
@@ -89,7 +88,6 @@ export const cancelOrder = createAsyncThunk(
   }
 );
 
-// Slice
 const ordersSlice = createSlice({
   name: "orders",
   initialState: {

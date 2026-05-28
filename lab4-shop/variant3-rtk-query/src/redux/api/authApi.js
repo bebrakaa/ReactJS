@@ -15,7 +15,6 @@ export const authApi = apiSlice.injectEndpoints({
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data));
         } catch (err) {
-          // Handle error
         }
       },
       invalidatesTags: ["User"],
@@ -34,7 +33,6 @@ export const authApi = apiSlice.injectEndpoints({
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data));
         } catch (err) {
-          // Handle error
         }
       },
       invalidatesTags: ["User"],

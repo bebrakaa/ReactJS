@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Helper function to calculate totals
 const calculateTotals = (items) => {
   const totalAmount = items.reduce(
     (sum, item) => sum + item.price * item.quantity,

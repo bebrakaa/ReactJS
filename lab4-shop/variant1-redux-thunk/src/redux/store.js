@@ -15,7 +15,6 @@ const rootReducer = combineReducers({
   orders: ordersReducer
 });
 
-// Load cart from localStorage
 const loadCartFromStorage = () => {
   try {
     const serializedCart = localStorage.getItem("cart");
@@ -36,30 +35,24 @@ const loadCartFromStorage = () => {
   }
 };
 
-// Save cart to localStorage
 const saveCartToStorage = (state) => {
   try {
     const serializedCart = JSON.stringify(state.cart);
     localStorage.setItem("cart", serializedCart);
   } catch (err) {
-    // Ignore write errors
   }
 };
 
-// Initial state
 const preloadedState = loadCartFromStorage();
 
-// Redux DevTools Extension
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-// Create store
 const store = createStore(
   rootReducer,
   preloadedState,
   composeEnhancers(applyMiddleware(thunk))
 );
 
-// Subscribe to store changes to save cart
 store.subscribe(() => {
   saveCartToStorage(store.getState());
 });

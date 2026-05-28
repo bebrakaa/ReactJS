@@ -1,0 +1,480 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "title": "Ноутбук ASUS ROG Strix G15",
+      "description": "Игровой ноутбук с процессором AMD Ryzen 7 и NVIDIA GeForce RTX 3060. Идеален для игр и работы с графикой.",
+      "price": 89990,
+      "category": "Ноутбуки",
+      "image": "laptop-1.jpg",
+      "stock": 14,
+      "rating": 4.8
+    },
+    {
+      "id": "2",
+      "title": "Смартфон Samsung Galaxy S23",
+      "description": "Флагманский смартфон с камерой 50 Мп и процессором Snapdragon 8 Gen 2. Премиальное качество.",
+      "price": 64990,
+      "category": "Смартфоны",
+      "image": "phone-1.jpg",
+      "stock": 25,
+      "rating": 4.9
+    },
+    {
+      "id": "3",
+      "title": "Монитор LG UltraGear 27\"",
+      "description": "Игровой монитор 27 дюймов с частотой 144 Гц и разрешением 2K. Плавная картинка в играх.",
+      "price": 32990,
+      "category": "Мониторы",
+      "image": "monitor-1.jpg",
+      "stock": 19,
+      "rating": 4.7
+    },
+    {
+      "id": "4",
+      "title": "Планшет iPad Air 5",
+      "description": "Планшет Apple с дисплеем 10.9 дюймов и чипом M1. Мощность и портативность.",
+      "price": 59990,
+      "category": "Планшеты",
+      "image": "tablet-1.jpg",
+      "stock": 17,
+      "rating": 4.9
+    },
+    {
+      "id": "5",
+      "title": "Клавиатура Logitech MX Keys",
+      "description": "Беспроводная механическая клавиатура с подсветкой. Комфортная работа весь день.",
+      "price": 8990,
+      "category": "Аксессуары",
+      "image": "keyboard-1.jpg",
+      "stock": 48,
+      "rating": 4.6
+    },
+    {
+      "id": "6",
+      "title": "Мышь Logitech MX Master 3S",
+      "description": "Беспроводная компьютерная мышь с точным наведением. Эргономичный дизайн.",
+      "price": 7990,
+      "category": "Аксессуары",
+      "image": "mouse-1.jpg",
+      "stock": 60,
+      "rating": 4.8
+    },
+    {
+      "id": "7",
+      "title": "Наушники Sony WH-1000XM5",
+      "description": "Беспроводные наушники с активным шумоподавлением. Премиальный звук.",
+      "price": 32990,
+      "category": "Аудио",
+      "image": "headphones-1.jpg",
+      "stock": 30,
+      "rating": 4.9
+    },
+    {
+      "id": "8",
+      "title": "Внешний SSD Samsung T7",
+      "description": "Внешний твердотельный накопитель на 1 ТБ со скоростью 1050 МБ/с. Быстро и надежно.",
+      "price": 12990,
+      "category": "Накопители",
+      "image": "ssd-1.jpg",
+      "stock": 40,
+      "rating": 4.7
+    },
+    {
+      "id": "9",
+      "title": "Веб-камера Logitech C920",
+      "description": "HD веб-камера с разрешением 1080p и автофокусом. Четкое изображение для видеозвонков.",
+      "price": 4990,
+      "category": "Аксессуары",
+      "image": "webcam-1.jpg",
+      "stock": 35,
+      "rating": 4.5
+    },
+    {
+      "id": "10",
+      "title": "Микрофон Blue Yeti",
+      "description": "USB микрофон для записи и стриминга высокого качества. Профессиональный звук.",
+      "price": 11990,
+      "category": "Аудио",
+      "image": "mic-1.jpg",
+      "stock": 22,
+      "rating": 4.8
+    },
+    {
+      "id": "11",
+      "title": "Смартфон iPhone 15 Pro",
+      "description": "Флагманский смартфон Apple с титановым корпусом и камерой 48 Мп. Инновации Apple.",
+      "price": 119990,
+      "category": "Смартфоны",
+      "image": "phone-2.jpg",
+      "stock": 12,
+      "rating": 5
+    },
+    {
+      "id": "12",
+      "title": "Ноутбук MacBook Pro 14",
+      "description": "Ноутбук Apple с чипом M2 Pro и дисплеем Liquid Retina XDR. Профессиональная мощность.",
+      "price": 189990,
+      "category": "Ноутбуки",
+      "image": "laptop-2.jpg",
+      "stock": 8,
+      "rating": 5
+    },
+    {
+      "id": "13",
+      "title": "Колонки JBL Flip 6",
+      "description": "Портативная Bluetooth колонка с мощным звуком. Водонепроницаемая.",
+      "price": 8990,
+      "category": "Аудио",
+      "image": "speaker-1.jpg",
+      "stock": 45,
+      "rating": 4.6
+    },
+    {
+      "id": "14",
+      "title": "Умные часы Apple Watch Series 9",
+      "description": "Умные часы Apple с GPS и функцией ЭКГ. Здоровье под контролем.",
+      "price": 39990,
+      "category": "Носимые устройства",
+      "image": "watch-1.jpg",
+      "stock": 28,
+      "rating": 4.8
+    },
+    {
+      "id": "15",
+      "title": "Игровая приставка PlayStation 5",
+      "description": "Sony PlayStation 5 с дисководом и геймпадом DualSense. Игры нового поколения.",
+      "price": 49990,
+      "category": "Игры",
+      "image": "console-1.jpg",
+      "stock": 10,
+      "rating": 4.9
+    },
+    {
+      "id": "16",
+      "title": "Роутер TP-Link Archer AX73",
+      "description": "Wi-Fi 6 роутер с поддержкой скорости до 5400 Мбит/с. Стабильное подключение.",
+      "price": 9990,
+      "category": "Сеть",
+      "image": "router-1.jpg",
+      "stock": 33,
+      "rating": 4.5
+    },
+    {
+      "id": "17",
+      "title": "Принтер Canon PIXMA",
+      "description": "Цветной струйный принтер с функцией сканера и копира. Универсальное решение.",
+      "price": 6990,
+      "category": "Офис",
+      "image": "printer-1.jpg",
+      "stock": 25,
+      "rating": 4.4
+    },
+    {
+      "id": "18",
+      "title": "Графический планшет Wacom",
+      "description": "Профессиональный графический планшет для дизайнеров. Точность и удобство.",
+      "price": 24990,
+      "category": "Аксессуары",
+      "image": "tablet-2.jpg",
+      "stock": 15,
+      "rating": 4.7
+    },
+    {
+      "id": "19",
+      "title": "Кресло для геймеров DXRacer",
+      "description": "Эргономичное игровое кресло с поддержкой поясницы. Комфорт на долгие часы.",
+      "price": 19990,
+      "category": "Мебель",
+      "image": "chair-1.jpg",
+      "stock": 12,
+      "rating": 4.6
+    },
+    {
+      "id": "20",
+      "title": "Портативный аккумулятор Anker",
+      "description": "Внешний аккумулятор на 20000 мАч с быстрой зарядкой. Энергия в дороге.",
+      "price": 3990,
+      "category": "Аксессуары",
+      "image": "powerbank-1.jpg",
+      "stock": 70,
+      "rating": 4.5
+    }
+  ],
+  "users": [
+    {
+      "id": "313109ad-9907-4245-8ecb-e1bdce43fadf",
+      "email": "user@test.com",
+      "password": "123456",
+      "name": "dfsdf",
+      "token": "d3fe9afa-9304-4416-b41f-b11c4cd695d1",
+      "createdAt": "2026-05-11T18:45:56.062Z"
+    },
+    {
+      "id": "e11a6c0e-02c3-410c-a729-c92559859ff6",
+      "email": "smoke_242921396@test.com",
+      "password": "123456",
+      "name": "Smoke User",
+      "token": "85cc6ea0-2cbd-456c-bc13-14919186b182",
+      "createdAt": "2026-05-14T02:00:32.629Z"
+    },
+    {
+      "id": "935f0b5f-14d9-4341-ab00-ca0798b453ba",
+      "email": "test@example.com",
+      "password": "password123",
+      "name": "TEST",
+      "token": "dd2b06aa-0b0f-453f-b952-d5f41bf92238",
+      "createdAt": "2026-05-21T08:51:55.647Z"
+    },
+    {
+      "id": "4493e94f-92d6-4d4b-9715-53ac4ee49523",
+      "email": "sdfgb@erg.rt",
+      "password": "123321",
+      "name": "erth",
+      "token": "43d7200d-f4db-432f-8a6e-c672b7790789",
+      "createdAt": "2026-05-21T18:20:55.046Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "b70e1a0b-cd21-4aa9-a8e1-54440d5ca3e6",
+      "userId": "313109ad-9907-4245-8ecb-e1bdce43fadf",
+      "items": [
+        {
+          "productId": "2",
+          "title": "Смартфон Samsung Galaxy S23",
+          "price": 64990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 64990,
+      "shippingAddress": {
+        "fullName": "аыампаывпиыав",
+        "phone": "23141234123",
+        "email": "павыпва",
+        "city": "фвыа",
+        "address": "ывафыва",
+        "postalCode": "фыва"
+      },
+      "paymentMethod": "cash",
+      "status": "cancelled",
+      "createdAt": "2026-05-11T18:47:31.408Z"
+    },
+    {
+      "id": "c41d8195-d8d5-4d0d-b7d8-92b0f1f84f96",
+      "userId": "e11a6c0e-02c3-410c-a729-c92559859ff6",
+      "items": [
+        {
+          "productId": "1",
+          "title": "Ноутбук ASUS ROG Strix G15",
+          "price": 89990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 89990,
+      "shippingAddress": {
+        "city": "??????",
+        "fullName": "Smoke User",
+        "phone": "+7 (999) 123-45-67",
+        "postalCode": "123456",
+        "email": "smoke_242921396@test.com",
+        "address": "????????, 1"
+      },
+      "paymentMethod": "card",
+      "status": "cancelled",
+      "createdAt": "2026-05-14T02:00:33.137Z"
+    },
+    {
+      "id": "a6abb6b5-0fa4-4668-96f3-6193fd768b15",
+      "userId": "313109ad-9907-4245-8ecb-e1bdce43fadf",
+      "items": [
+        {
+          "productId": "14",
+          "title": "Умные часы Apple Watch Series 9",
+          "price": 39990,
+          "quantity": 1
+        },
+        {
+          "productId": "3",
+          "title": "Монитор LG UltraGear 27\"",
+          "price": 32990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 72980,
+      "shippingAddress": {
+        "fullName": "sfasd",
+        "phone": "+7 (241) 312-31-23",
+        "email": "fqawefqwe@sfwaefwe.ry",
+        "city": "fasdf",
+        "address": "sadfads",
+        "postalCode": "123123"
+      },
+      "paymentMethod": "card",
+      "status": "cancelled",
+      "createdAt": "2026-05-14T02:39:17.519Z"
+    },
+    {
+      "id": "834f72d7-fefa-4f40-9919-0b57b8b95292",
+      "userId": "313109ad-9907-4245-8ecb-e1bdce43fadf",
+      "items": [
+        {
+          "productId": "1",
+          "title": "Ноутбук ASUS ROG Strix G15",
+          "price": 89990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 89990,
+      "shippingAddress": {
+        "fullName": "vdfgds",
+        "phone": "+7 (453) 425-63-24",
+        "email": "sfdgsdrg@!rtfhrethtr.yter",
+        "city": "terwt",
+        "address": "ewrterwt",
+        "postalCode": "123124"
+      },
+      "paymentMethod": "card",
+      "status": "cancelled",
+      "createdAt": "2026-05-14T02:43:27.309Z"
+    },
+    {
+      "id": "c3129fd0-4036-4b96-bef1-cc79f4746fa8",
+      "userId": "313109ad-9907-4245-8ecb-e1bdce43fadf",
+      "items": [
+        {
+          "productId": "15",
+          "title": "Игровая приставка PlayStation 5",
+          "price": 49990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 49990,
+      "shippingAddress": {
+        "fullName": "апрывепекпрке",
+        "phone": "+7 (242) 435-12-34",
+        "email": "ацыпицукп@wGBRT.SRFER",
+        "city": "fgdfsg",
+        "address": "dfsgdsfg",
+        "postalCode": "123123"
+      },
+      "paymentMethod": "card",
+      "status": "cancelled",
+      "createdAt": "2026-05-14T05:37:10.720Z"
+    },
+    {
+      "id": "e8c37fd8-7e8a-457b-af81-8178941ea2a9",
+      "userId": "313109ad-9907-4245-8ecb-e1bdce43fadf",
+      "items": [
+        {
+          "productId": "2",
+          "title": "Смартфон Samsung Galaxy S23",
+          "price": 64990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 64990,
+      "shippingAddress": {
+        "fullName": "ваапыва",
+        "phone": "+7 (412) 321-31-23",
+        "email": "аывпмыва@rgr.erter",
+        "city": "ert",
+        "address": "erteger",
+        "postalCode": "324123"
+      },
+      "paymentMethod": "card",
+      "status": "cancelled",
+      "createdAt": "2026-05-14T06:02:42.461Z"
+    },
+    {
+      "id": "7dc44d9c-46d2-415a-94f4-717c6e154e78",
+      "userId": "313109ad-9907-4245-8ecb-e1bdce43fadf",
+      "items": [
+        {
+          "productId": "1",
+          "title": "Ноутбук ASUS ROG Strix G15",
+          "price": 89990,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 179980,
+      "shippingAddress": {
+        "fullName": "ывафываыфва",
+        "phone": "+7 (523) 453-24-52",
+        "email": "bdfgdsfgsd@ergergwerg.ert",
+        "city": "rterwtewrt",
+        "address": "egwergewr",
+        "postalCode": "321413"
+      },
+      "paymentMethod": "card",
+      "status": "cancelled",
+      "createdAt": "2026-05-14T06:08:45.020Z"
+    },
+    {
+      "id": "b10566b4-cd49-4b0d-a4e2-8fef1f0f8314",
+      "userId": "935f0b5f-14d9-4341-ab00-ca0798b453ba",
+      "items": [
+        {
+          "productId": "3",
+          "title": "Монитор LG UltraGear 27\"",
+          "price": 32990,
+          "quantity": 1
+        },
+        {
+          "productId": "5",
+          "title": "Клавиатура Logitech MX Keys",
+          "price": 8990,
+          "quantity": 2
+        },
+        {
+          "productId": "4",
+          "title": "Планшет iPad Air 5",
+          "price": 59990,
+          "quantity": 1
+        },
+        {
+          "productId": "1",
+          "title": "Ноутбук ASUS ROG Strix G15",
+          "price": 89990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 200950,
+      "shippingAddress": {
+        "fullName": "Иванов Иван Иванович",
+        "phone": "+7 (123) 456-78-90",
+        "email": "test@test.ru",
+        "city": "Владимир",
+        "address": "Какая-то улица",
+        "postalCode": "123456"
+      },
+      "paymentMethod": "online",
+      "status": "processing",
+      "createdAt": "2026-05-21T08:55:02.523Z"
+    },
+    {
+      "id": "96c0b3ce-3874-4da1-87d6-794086e658da",
+      "userId": "935f0b5f-14d9-4341-ab00-ca0798b453ba",
+      "items": [
+        {
+          "productId": "3",
+          "title": "Монитор LG UltraGear 27\"",
+          "price": 32990,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 32990,
+      "shippingAddress": {
+        "fullName": "gdhdfgh",
+        "phone": "+7 (346) 354-23-42",
+        "email": "dfsg@fdsgsfd.ret",
+        "city": "sdfgsdf",
+        "address": "sdfgsdfg",
+        "postalCode": "234112"
+      },
+      "paymentMethod": "card",
+      "status": "cancelled",
+      "createdAt": "2026-05-26T14:17:46.026Z"
+    }
+  ]
+}
