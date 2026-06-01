@@ -11,66 +11,61 @@ function HomePage() {
 
   return (
     <div className="container homepage">
-      <div className="hero-section">
-        <h1>Добро пожаловать в TechHub</h1>
+      <section className="hero-section" aria-labelledby="home-title">
+        <h1 id="home-title">Добро пожаловать в TechHub</h1>
         <p className="hero-subtitle">
-          Ваш надежный интернет-магазин электроники и гаджетов
+          Демонстрационный магазин электроники на Redux Saga с доступным интерфейсом, выровненным под уровень AA.
         </p>
-      </div>
+      </section>
 
-      <div className="features-grid">
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">1</div>
-          <h3>Широкий ассортимент</h3>
-          <p>Более 1000 товаров от ведущих производителей</p>
+      <section aria-labelledby="benefits-title">
+        <h2 id="benefits-title">Что важно для доступности</h2>
+        <p className="section-intro">В приложении соблюдены единообразие навигации, понятные подписи, контрастные элементы управления и защита от ошибок при оформлении заказа.</p>
+        <div className="features-grid" role="list">
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">1</div>
+            <h3>Понятные страницы</h3>
+            <p>Каждая страница имеет осмысленный заголовок и логичную структуру разделов.</p>
+          </article>
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">2</div>
+            <h3>Полная клавиатурная доступность</h3>
+            <p>Управление корзиной, каталогом и формами не требует использования мыши.</p>
+          </article>
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">3</div>
+            <h3>Надёжная обратная связь</h3>
+            <p>Статусы загрузки, пустых состояний и ошибок объявляются программно.</p>
+          </article>
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">4</div>
+            <h3>Предсказуемые действия</h3>
+            <p>Ни одно изменение контекста не происходит внезапно при вводе данных.</p>
+          </article>
         </div>
+      </section>
 
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">2</div>
-          <h3>Быстрая доставка</h3>
-          <p>Доставка по всей России от 1 дня</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">3</div>
-          <h3>Гарантия качества</h3>
-          <p>Официальная гарантия на все товары</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">4</div>
-          <h3>Удобная оплата</h3>
-          <p>Различные способы оплаты</p>
-        </div>
-      </div>
-
-      <div className="cta-section">
-        <h2>Начните покупки прямо сейчас!</h2>
+      <section className="cta-section" aria-labelledby="cta-title">
+        <h2 id="cta-title">Продолжить работу</h2>
         <div className="cta-buttons">
           <Link to="/products" className="btn btn-primary">
             Перейти в каталог
           </Link>
           {!isAuthenticated && (
             <Link to="/register" className="btn btn-secondary">
-              Зарегистрироваться
+              Создать аккаунт
             </Link>
           )}
         </div>
-      </div>
+      </section>
 
-      <div className="info-section">
-        <h3>О проекте</h3>
-        <p>
-          Это демонстрационное приложение интернет-магазина, разработанное с
-          использованием React, Redux Toolkit и Redux Saga. Вариант показывает,
-          как вынести асинхронную логику авторизации, товаров и заказов в saga,
-          сохранив привычный пользовательский сценарий магазина.
-        </p>
+      <section className="info-section" aria-labelledby="about-project-title">
+        <h2 id="about-project-title">О проекте</h2>
+        <p>Этот вариант лабораторной работы построен на React, Redux Saga и React Router.</p>
         <p className="tech-stack">
-          <strong>Технологии:</strong> React, Redux Toolkit, Redux Saga, React
-          Router, Express
+          <strong>Технологии:</strong> React, Redux, Redux Saga, React Router, Express.
         </p>
-      </div>
+      </section>
     </div>
   );
 }

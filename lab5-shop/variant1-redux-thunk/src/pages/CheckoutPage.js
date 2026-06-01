@@ -151,7 +151,7 @@ function CheckoutPage() {
   }
 
   return (
-    <div className="container">
+    <div className="container" aria-busy={loading}>
       <h1>Оформление заказа</h1>
 
       <div className="checkout-progress" role="list" aria-label="Этапы оформления заказа">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/actions/authActions";
@@ -23,103 +23,95 @@ function LoginPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Валидация полей
-    const newErrors = {};
-    
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const nextErrors = {};
     const emailError = validateEmail(email);
-    if (emailError) newErrors.email = emailError;
-    
     const passwordError = validatePassword(password);
-    if (passwordError) newErrors.password = passwordError;
-    
-    setErrors(newErrors);
-    
-    // Если есть ошибки, не отправляем форму
-    if (Object.keys(newErrors).length > 0) {
+
+    if (emailError) nextErrors.email = emailError;
+    if (passwordError) nextErrors.password = passwordError;
+
+    setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
     const result = await dispatch(login(email, password));
-
     if (!result.success) {
       setErrors({ submit: result.error });
-    }
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    if (errors.email) {
-      setErrors({ ...errors, email: "" });
-    }
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    if (errors.password) {
-      setErrors({ ...errors, password: "" });
     }
   };
 
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h2>Вход в систему</h2>
+        <h1>Вход в систему</h1>
+        <p className="section-intro">Введите адрес электронной почты и пароль. Все поля обязательны.</p>
 
         {(errors.submit || authError) && (
-          <div className="error-message" role="alert">{errors.submit || authError}</div>
+          <div className="form-error-summary" role="alert">
+            <p><strong>Не удалось выполнить вход.</strong></p>
+            <p>{errors.submit || authError}</p>
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" noValidate aria-busy={loading}>
           <div className="form-group">
-            <label htmlFor="email">Email *</label>
+            <label htmlFor="login-email">Email *</label>
             <input
               type="email"
-              id="email"
+              id="login-email"
               value={email}
-              onChange={handleEmailChange}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                if (errors.email) setErrors({ ...errors, email: "" });
+              }}
               placeholder="example@mail.com"
               disabled={loading}
               className={errors.email ? "error" : ""}
               aria-invalid={Boolean(errors.email)}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              aria-required="true"
+              aria-describedby={errors.email ? "login-email-error" : "login-email-hint"}
               autoComplete="email"
             />
-            {errors.email && <span id="email-error" className="error-text" role="alert">{errors.email}</span>}
+            <span id="login-email-hint" className="field-hint">Используйте адрес, указанный при регистрации.</span>
+            {errors.email && <span id="login-email-error" className="error-text" role="alert">{errors.email}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Пароль *</label>
+            <label htmlFor="login-password">Пароль *</label>
             <input
               type="password"
-              id="password"
+              id="login-password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                if (errors.password) setErrors({ ...errors, password: "" });
+              }}
               placeholder="Введите пароль"
               disabled={loading}
               className={errors.password ? "error" : ""}
               aria-invalid={Boolean(errors.password)}
-              aria-describedby={errors.password ? "password-error" : undefined}
-              aria-required="true"
+              aria-describedby={errors.password ? "login-password-error" : "login-password-hint"}
               autoComplete="current-password"
               maxLength={50}
             />
-            {errors.password && <span id="password-error" className="error-text" role="alert">{errors.password}</span>}
+            <span id="login-password-hint" className="field-hint">Пароль чувствителен к регистру символов.</span>
+            {errors.password && <span id="login-password-error" className="error-text" role="alert">{errors.password}</span>}
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Вход..." : "Войти"}
+            {loading ? "Выполняется вход..." : "Войти"}
           </button>
         </form>
 
         <p className="auth-link">
-          Нет аккаунта? <Link to="/register">Зарегистрируйтесь</Link>
+          Нет аккаунта? <Link to="/register">Перейти к регистрации</Link>
         </p>
 
-        <div className="test-credentials">
+        <div className="test-credentials" aria-label="Тестовые учетные данные">
           <p><strong>Тестовые данные:</strong></p>
           <p>Email: user@test.com</p>
           <p>Пароль: 123456</p>

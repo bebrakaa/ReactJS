@@ -14,6 +14,9 @@ function LoginPage() {
 
   useEffect(() => {
     document.title = "Вход - TechHub";
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) {
       navigate("/products");
     }
@@ -39,11 +42,17 @@ function LoginPage() {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h2>Вход в систему</h2>
+        <h1>Вход в систему</h1>
+        <p className="section-intro">После входа станут доступны оформление заказа и история покупок.</p>
 
-        {error && <div className="error-message" role="alert">{error}</div>}
+        {error && (
+          <div className="form-error-summary" role="alert">
+            <p><strong>Ошибка входа.</strong></p>
+            <p>{error}</p>
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" noValidate aria-busy={loading}>
           <div className="form-group">
             <label htmlFor="login-email">Email *</label>
             <input
@@ -56,13 +65,13 @@ function LoginPage() {
               }}
               placeholder="example@mail.com"
               className={errors.email ? "error" : ""}
-              aria-required="true"
               aria-invalid={Boolean(errors.email)}
-              aria-describedby={errors.email ? "email-error" : undefined}
+              aria-describedby={errors.email ? "login-email-error" : "login-email-hint"}
               autoComplete="email"
               disabled={loading}
             />
-            {errors.email && <span id="email-error" className="error-text" role="alert">{errors.email}</span>}
+            <span id="login-email-hint" className="field-hint">Используйте адрес электронной почты, привязанный к аккаунту.</span>
+            {errors.email && <span id="login-email-error" className="error-text" role="alert">{errors.email}</span>}
           </div>
 
           <div className="form-group">
@@ -77,26 +86,26 @@ function LoginPage() {
               }}
               placeholder="Введите пароль"
               className={errors.password ? "error" : ""}
-              aria-required="true"
               aria-invalid={Boolean(errors.password)}
-              aria-describedby={errors.password ? "password-error" : undefined}
+              aria-describedby={errors.password ? "login-password-error" : "login-password-hint"}
               autoComplete="current-password"
               disabled={loading}
               maxLength={50}
             />
-            {errors.password && <span id="password-error" className="error-text" role="alert">{errors.password}</span>}
+            <span id="login-password-hint" className="field-hint">Пароль не отображается на экране для защиты данных.</span>
+            {errors.password && <span id="login-password-error" className="error-text" role="alert">{errors.password}</span>}
           </div>
 
           <button type="submit" className="btn" disabled={loading}>
-            {loading ? "Вход..." : "Войти"}
+            {loading ? "Выполняется вход..." : "Войти"}
           </button>
         </form>
 
         <div className="auth-link">
-          Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
+          Нет аккаунта? <Link to="/register">Перейти к регистрации</Link>
         </div>
 
-        <div className="test-credentials">
+        <div className="test-credentials" aria-label="Тестовые учетные данные">
           <p><strong>Тестовые данные:</strong></p>
           <p>Email: test@example.com</p>
           <p>Пароль: password123</p>

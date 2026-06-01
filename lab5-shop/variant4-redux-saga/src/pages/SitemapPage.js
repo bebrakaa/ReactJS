@@ -12,26 +12,29 @@ function SitemapPage() {
   return (
     <div className="container">
       <h1>Карта сайта</h1>
+      <p className="section-intro">Карта сайта дополняет основное меню и даёт ещё один способ перейти к нужному разделу.</p>
+
       <nav aria-label="Карта сайта">
-        <section>
-          <h2>Основные страницы</h2>
+        <section aria-labelledby="sitemap-main">
+          <h2 id="sitemap-main">Основные страницы</h2>
           <ul>
             <li><Link to="/">Главная</Link></li>
             <li><Link to="/products">Каталог товаров</Link></li>
+            <li><Link to="/sitemap">Карта сайта</Link></li>
           </ul>
         </section>
 
         {!isAuthenticated ? (
-          <section>
-            <h2>Аутентификация</h2>
+          <section aria-labelledby="sitemap-auth">
+            <h2 id="sitemap-auth">Вход и регистрация</h2>
             <ul>
               <li><Link to="/login">Вход</Link></li>
               <li><Link to="/register">Регистрация</Link></li>
             </ul>
           </section>
         ) : (
-          <section>
-            <h2>Личный кабинет</h2>
+          <section aria-labelledby="sitemap-account">
+            <h2 id="sitemap-account">Личный кабинет</h2>
             <ul>
               <li><Link to="/cart">Корзина</Link></li>
               <li><Link to="/checkout">Оформление заказа</Link></li>
@@ -39,13 +42,6 @@ function SitemapPage() {
             </ul>
           </section>
         )}
-
-        <section>
-          <h2>Дополнительно</h2>
-          <ul>
-            <li><Link to="/sitemap">Карта сайта</Link></li>
-          </ul>
-        </section>
       </nav>
     </div>
   );

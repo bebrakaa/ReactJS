@@ -16,28 +16,33 @@ function ProductsPage() {
     loadMore,
   } = useProducts();
 
-  // Устанавливаем заголовок страницы
   useEffect(() => {
     document.title = "Каталог товаров - TechHub";
   }, []);
 
   return (
-    <div className="container">
+    <div className="container" aria-busy={loading}>
       <h1>Каталог товаров</h1>
+      <p className="section-intro" id="products-page-description">
+        Используйте фильтры ниже, чтобы уточнить список товаров. Все элементы управления доступны с клавиатуры.
+      </p>
 
-      <section className="filters-section" aria-label="Фильтры товаров">
+      <section
+        className="filters-section"
+        aria-describedby="products-page-description"
+        aria-label="Фильтры товаров"
+      >
         <div className="filter-group">
           <label htmlFor="category-filter">Категория:</label>
           <select
             id="category-filter"
             value={filters.category}
-            onChange={(e) => setFilter("category", e.target.value)}
-            aria-label="Выберите категорию товаров"
+            onChange={(event) => setFilter("category", event.target.value)}
           >
             <option value="all">Все категории</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
               </option>
             ))}
           </select>
@@ -49,23 +54,26 @@ function ProductsPage() {
             type="text"
             id="search-filter"
             value={filters.search}
-            onChange={(e) => setFilter("search", e.target.value)}
-            placeholder="Название товара..."
-            aria-label="Поиск товаров по названию"
+            onChange={(event) => setFilter("search", event.target.value)}
+            placeholder="Название товара"
           />
         </div>
 
-        <button onClick={clearFilters} className="btn-clear-filters">
+        <button type="button" onClick={clearFilters} className="btn-clear-filters">
           Сбросить фильтры
         </button>
       </section>
 
       {products.length > 0 && (
-        <p className="goods-count" aria-live="polite">Загружено товаров: {products.length}</p>
+        <p className="goods-count page-status" aria-live="polite" role="status">
+          Загружено товаров: {products.length}
+        </p>
       )}
 
       {loading && products.length === 0 && (
-        <div className="loading" role="status" aria-live="polite">Загрузка...</div>
+        <div className="loading" role="status" aria-live="polite">
+          Загрузка товаров
+        </div>
       )}
 
       {error && (
@@ -74,7 +82,12 @@ function ProductsPage() {
         </div>
       )}
 
-      <div className="products-grid" role="list" aria-live="polite">
+      <div
+        className="products-grid"
+        role="list"
+        aria-describedby="products-page-description"
+        aria-live="polite"
+      >
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -88,9 +101,7 @@ function ProductsPage() {
         </button>
       )}
 
-      {!hasMore && products.length > 0 && (
-        <p className="no-more">Все товары загружены</p>
-      )}
+      {!hasMore && products.length > 0 && <p className="no-more">Все товары загружены</p>}
 
       {!loading && products.length === 0 && !error && (
         <p className="no-products">Товары не найдены</p>

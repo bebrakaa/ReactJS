@@ -37,7 +37,7 @@ function OrderCard({ order, initiallyOpen = false }) {
   };
 
   return (
-    <div className={`order-card ${isOpen ? "expanded" : "collapsed"}`}>
+    <article className={`order-card ${isOpen ? "expanded" : "collapsed"}`} role="listitem">
       <div className="order-header">
         <div className="order-info">
           <h3 className="order-id">Заказ #{order.id.slice(0, 8)}</h3>
@@ -60,11 +60,11 @@ function OrderCard({ order, initiallyOpen = false }) {
         </div>
       </div>
 
-      {isOpen && (
+      {isOpen ? (
         <div id={`order-details-${order.id}`}>
-          <div className="order-items">
+          <div className="order-items" role="list" aria-label={`Состав заказа ${order.id.slice(0, 8)}`}>
             {order.items.map((item, index) => (
-              <div key={`${item.productId}-${index}`} className="order-item">
+              <div key={`${item.productId}-${index}`} className="order-item" role="listitem">
                 <span className="order-item-title">{item.title}</span>
                 <span className="order-item-quantity">x{item.quantity}</span>
                 <span className="order-item-price">
@@ -76,32 +76,28 @@ function OrderCard({ order, initiallyOpen = false }) {
 
           <div className="order-details">
             <p>
-              <strong>Адрес доставки:</strong> {order.shippingAddress.city},{" "}
-              {order.shippingAddress.address}
+              <strong>Адрес доставки:</strong> {order.shippingAddress.city}, {order.shippingAddress.address}
             </p>
             <p>
-              <strong>Способ оплаты:</strong>{" "}
-              {paymentLabels[order.paymentMethod] || order.paymentMethod}
+              <strong>Способ оплаты:</strong> {paymentLabels[order.paymentMethod] || order.paymentMethod}
             </p>
           </div>
         </div>
-      )}
+      ) : null}
 
       <div className="order-footer">
         <div className="order-total">
           <span className="order-total-label">Итого:</span>
-          <span className="order-total-value">
-            {order.totalAmount.toLocaleString("ru-RU")} ₽
-          </span>
+          <span className="order-total-value">{order.totalAmount.toLocaleString("ru-RU")} ₽</span>
         </div>
 
-        {canCancel && (
+        {canCancel ? (
           <button type="button" onClick={handleCancel} className="btn-cancel-order">
             Отменить заказ
           </button>
-        )}
+        ) : null}
       </div>
-    </div>
+    </article>
   );
 }
 

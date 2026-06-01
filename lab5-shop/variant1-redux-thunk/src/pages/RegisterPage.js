@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/actions/authActions";
-import { validateEmail, validatePassword, validateName } from "../utils/validation";
+import { validateEmail, validateName, validatePassword } from "../utils/validation";
 
 function RegisterPage() {
   const [name, setName] = useState("");
@@ -25,153 +25,135 @@ function RegisterPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Валидация всех полей
-    const newErrors = {};
-    
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const nextErrors = {};
     const nameError = validateName(name);
-    if (nameError) newErrors.name = nameError;
-    
     const emailError = validateEmail(email);
-    if (emailError) newErrors.email = emailError;
-    
     const passwordError = validatePassword(password);
-    if (passwordError) newErrors.password = passwordError;
-    
+
+    if (nameError) nextErrors.name = nameError;
+    if (emailError) nextErrors.email = emailError;
+    if (passwordError) nextErrors.password = passwordError;
     if (!confirmPassword) {
-      newErrors.confirmPassword = "Подтвердите пароль";
+      nextErrors.confirmPassword = "Подтвердите пароль.";
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Пароли не совпадают";
+      nextErrors.confirmPassword = "Пароли не совпадают.";
     }
-    
-    setErrors(newErrors);
-    
-    // Если есть ошибки, не отправляем форму
-    if (Object.keys(newErrors).length > 0) {
+
+    setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
     const result = await dispatch(register(name, email, password));
-
     if (!result.success) {
       setErrors({ submit: result.error });
-    }
-  };
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-    if (errors.name) {
-      setErrors({ ...errors, name: "" });
-    }
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    if (errors.email) {
-      setErrors({ ...errors, email: "" });
-    }
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    if (errors.password) {
-      setErrors({ ...errors, password: "" });
-    }
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    if (errors.confirmPassword) {
-      setErrors({ ...errors, confirmPassword: "" });
     }
   };
 
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h2>Регистрация</h2>
+        <h1>Регистрация</h1>
+        <p className="section-intro">Создайте аккаунт, чтобы сохранять корзину и оформлять заказы. Все поля обязательны.</p>
 
         {(errors.submit || authError) && (
-          <div className="error-message" role="alert">{errors.submit || authError}</div>
+          <div className="form-error-summary" role="alert">
+            <p><strong>Не удалось завершить регистрацию.</strong></p>
+            <p>{errors.submit || authError}</p>
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" noValidate aria-busy={loading}>
           <div className="form-group">
-            <label htmlFor="name">Имя *</label>
+            <label htmlFor="register-name">Имя *</label>
             <input
               type="text"
-              id="name"
+              id="register-name"
               value={name}
-              onChange={handleNameChange}
-              placeholder="Введите ваше имя"
+              onChange={(event) => {
+                setName(event.target.value);
+                if (errors.name) setErrors({ ...errors, name: "" });
+              }}
+              placeholder="Иван Иванов"
               disabled={loading}
               className={errors.name ? "error" : ""}
               aria-invalid={Boolean(errors.name)}
-              aria-describedby={errors.name ? "name-error" : undefined}
-              aria-required="true"
+              aria-describedby={errors.name ? "register-name-error" : "register-name-hint"}
               autoComplete="name"
               maxLength={100}
             />
-            {errors.name && <span id="name-error" className="error-text" role="alert">{errors.name}</span>}
+            <span id="register-name-hint" className="field-hint">Укажите имя, которое будет отображаться в личном кабинете.</span>
+            {errors.name && <span id="register-name-error" className="error-text" role="alert">{errors.name}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email *</label>
+            <label htmlFor="register-email">Email *</label>
             <input
               type="email"
-              id="email"
+              id="register-email"
               value={email}
-              onChange={handleEmailChange}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                if (errors.email) setErrors({ ...errors, email: "" });
+              }}
               placeholder="example@mail.com"
               disabled={loading}
               className={errors.email ? "error" : ""}
               aria-invalid={Boolean(errors.email)}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              aria-required="true"
+              aria-describedby={errors.email ? "register-email-error" : "register-email-hint"}
               autoComplete="email"
             />
-            {errors.email && <span id="email-error" className="error-text" role="alert">{errors.email}</span>}
+            <span id="register-email-hint" className="field-hint">На этот адрес будет привязан вход в магазин.</span>
+            {errors.email && <span id="register-email-error" className="error-text" role="alert">{errors.email}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Пароль *</label>
+            <label htmlFor="register-password">Пароль *</label>
             <input
               type="password"
-              id="password"
+              id="register-password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                if (errors.password) setErrors({ ...errors, password: "" });
+              }}
               placeholder="Минимум 4 символа"
               disabled={loading}
               className={errors.password ? "error" : ""}
               aria-invalid={Boolean(errors.password)}
-              aria-describedby={errors.password ? "password-error" : undefined}
-              aria-required="true"
+              aria-describedby={errors.password ? "register-password-error" : "register-password-hint"}
               autoComplete="new-password"
               maxLength={50}
             />
-            {errors.password && <span id="password-error" className="error-text" role="alert">{errors.password}</span>}
+            <span id="register-password-hint" className="field-hint">Используйте не менее четырёх символов.</span>
+            {errors.password && <span id="register-password-error" className="error-text" role="alert">{errors.password}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Подтвердите пароль *</label>
+            <label htmlFor="register-confirm-password">Подтвердите пароль *</label>
             <input
               type="password"
-              id="confirmPassword"
+              id="register-confirm-password"
               value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
+              onChange={(event) => {
+                setConfirmPassword(event.target.value);
+                if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: "" });
+              }}
               placeholder="Повторите пароль"
               disabled={loading}
               className={errors.confirmPassword ? "error" : ""}
               aria-invalid={Boolean(errors.confirmPassword)}
-              aria-describedby={errors.confirmPassword ? "confirm-password-error" : undefined}
-              aria-required="true"
+              aria-describedby={errors.confirmPassword ? "register-confirm-password-error" : "register-confirm-password-hint"}
               autoComplete="new-password"
               maxLength={50}
             />
+            <span id="register-confirm-password-hint" className="field-hint">Поле помогает избежать ошибок перед созданием аккаунта.</span>
             {errors.confirmPassword && (
-              <span id="confirm-password-error" className="error-text" role="alert">{errors.confirmPassword}</span>
+              <span id="register-confirm-password-error" className="error-text" role="alert">{errors.confirmPassword}</span>
             )}
           </div>
 
@@ -181,7 +163,7 @@ function RegisterPage() {
         </form>
 
         <p className="auth-link">
-          Уже есть аккаунт? <Link to="/login">Войдите</Link>
+          Уже есть аккаунт? <Link to="/login">Перейти ко входу</Link>
         </p>
       </div>
     </div>

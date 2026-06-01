@@ -26,7 +26,7 @@ function ProductsPage() {
   const categoriesList = Array.isArray(categories) ? categories : [];
 
   return (
-    <div className="container">
+    <div className="container" aria-busy={loading}>
       <h1>Каталог товаров</h1>
 
       <section className="filters-section" aria-label="Фильтры товаров">

@@ -28,7 +28,7 @@ function OrderCard({ order, initiallyOpen = false }) {
   };
 
   return (
-    <div className={`order-card ${isOpen ? "expanded" : "collapsed"}`}>
+    <article className={`order-card ${isOpen ? "expanded" : "collapsed"}`} role="listitem">
       <div className="order-header">
         <div className="order-info">
           <h3 className="order-id">Заказ #{order.id.slice(0, 8)}</h3>
@@ -46,9 +46,9 @@ function OrderCard({ order, initiallyOpen = false }) {
 
       {isOpen && (
         <div id={`order-details-${order.id}`}>
-          <div className="order-items">
+          <div className="order-items" role="list" aria-label={`Состав заказа ${order.id.slice(0, 8)}`}>
             {order.items.map((item, index) => (
-              <div key={`${item.productId}-${index}`} className="order-item">
+              <div key={`${item.productId}-${index}`} className="order-item" role="listitem">
                 <span className="order-item-title">{item.title}</span>
                 <span className="order-item-quantity">x{item.quantity}</span>
                 <span className="order-item-price">
@@ -89,7 +89,7 @@ function OrderCard({ order, initiallyOpen = false }) {
           </button>
         )}
       </div>
-    </div>
+    </article>
   );
 }
 

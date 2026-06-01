@@ -39,17 +39,23 @@ function ProductsPage() {
   };
 
   return (
-    <div className="container">
+    <div className="container" aria-busy={loading}>
       <h1>Каталог товаров</h1>
+      <p className="section-intro" id="products-page-description">
+        Используйте фильтры ниже, чтобы уточнить список товаров. Все элементы управления доступны с клавиатуры.
+      </p>
 
-      <section className="filters-section" aria-label="Фильтры товаров">
+      <section
+        className="filters-section"
+        aria-describedby="products-page-description"
+        aria-label="Фильтры товаров"
+      >
         <div className="filter-group">
           <label htmlFor="category-filter">Категория:</label>
           <select
             id="category-filter"
             value={filters.category}
             onChange={(event) => handleFilterChange("category", event.target.value)}
-            aria-label="Выберите категорию товаров"
           >
             <option value="all">Все категории</option>
             {categories.map((category) => (
@@ -65,75 +71,79 @@ function ProductsPage() {
           <input
             id="search-filter"
             type="text"
-            placeholder="Название товара..."
+            placeholder="Название товара"
             value={filters.search}
             onChange={(event) => handleFilterChange("search", event.target.value)}
-            aria-label="Поиск товаров по названию"
           />
         </div>
 
         <div className="filter-group">
-          <label htmlFor="min-price-filter">Мин. цена:</label>
+          <label htmlFor="min-price-filter">Минимальная цена:</label>
           <input
             id="min-price-filter"
             type="number"
             placeholder="От"
             value={filters.minPrice}
             onChange={(event) => handleFilterChange("minPrice", event.target.value)}
-            aria-label="Минимальная цена"
+            inputMode="numeric"
           />
         </div>
 
         <div className="filter-group">
-          <label htmlFor="max-price-filter">Макс. цена:</label>
+          <label htmlFor="max-price-filter">Максимальная цена:</label>
           <input
             id="max-price-filter"
             type="number"
             placeholder="До"
             value={filters.maxPrice}
             onChange={(event) => handleFilterChange("maxPrice", event.target.value)}
-            aria-label="Максимальная цена"
+            inputMode="numeric"
           />
         </div>
 
-        <button className="btn-clear-filters" onClick={handleClearFilters}>
+        <button type="button" className="btn-clear-filters" onClick={handleClearFilters}>
           Сбросить фильтры
         </button>
       </section>
 
-      {items.length > 0 && (
-        <p className="goods-count" aria-live="polite">Загружено товаров: {items.length}</p>
-      )}
+      {items.length > 0 ? (
+        <p className="goods-count page-status" aria-live="polite" role="status">
+          Загружено товаров: {items.length}
+        </p>
+      ) : null}
 
-      {loading && items.length === 0 && <Loader />}
+      {loading && items.length === 0 ? <Loader /> : null}
 
-      {error && (
+      {error ? (
         <div className="error-message" role="alert">
           {error}
         </div>
-      )}
+      ) : null}
 
-      <div className="products-grid" role="list" aria-live="polite">
+      <div
+        className="products-grid"
+        role="list"
+        aria-describedby="products-page-description"
+        aria-live="polite"
+      >
         {items.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
-      {loading && items.length > 0 && <Loader />}
+      {loading && items.length > 0 ? <Loader /> : null}
 
-      {!loading && hasMore && items.length > 0 && (
+      {!loading && hasMore && items.length > 0 ? (
         <button type="button" className="btn btn-load-more" onClick={handleLoadMore}>
           Загрузить ещё
         </button>
-      )}
+      ) : null}
 
-      {!hasMore && items.length > 0 && (
-        <p className="no-more">Все товары загружены</p>
-      )}
+      {!hasMore && items.length > 0 ? <p className="no-more">Все товары загружены</p> : null}
 
-      {!loading && items.length === 0 && !error && (
+      {!loading && items.length === 0 && !error ? (
         <p className="no-products">Товары не найдены</p>
-      )}
+      ) : null}
     </div>
   );
 }

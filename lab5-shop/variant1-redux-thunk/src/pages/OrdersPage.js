@@ -41,7 +41,9 @@ function OrdersPage() {
     return (
       <div className="container">
         <h1>Мои заказы</h1>
-        <div className="error-message" role="alert">{error}</div>
+        <div className="error-message" role="alert">
+          {error}
+        </div>
       </div>
     );
   }
@@ -62,10 +64,7 @@ function OrdersPage() {
       <div className="orders-toolbar" aria-label="Фильтр заказов">
         <label className="orders-filter">
           Статус
-          <select
-            value={statusFilter}
-            onChange={(event) => setStatusFilter(event.target.value)}
-          >
+          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
             {statusOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -73,7 +72,7 @@ function OrdersPage() {
             ))}
           </select>
         </label>
-        <span className="orders-count">
+        <span className="orders-count page-status" aria-live="polite" role="status">
           Показано: {filteredOrders.length} из {items.length}
         </span>
       </div>
@@ -81,7 +80,7 @@ function OrdersPage() {
       {filteredOrders.length === 0 ? (
         <p className="no-orders">Заказов с выбранным статусом нет</p>
       ) : (
-        <div className="orders-list">
+        <div className="orders-list" role="list" aria-label="Список заказов">
           {filteredOrders.map((order, index) => (
             <OrderCard key={order.id} order={order} initiallyOpen={index === 0} />
           ))}

@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 function HomePage() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -11,44 +11,45 @@ function HomePage() {
 
   return (
     <div className="container homepage">
-      <div className="hero-section">
-        <h1>Добро пожаловать в TechHub</h1>
+      <section className="hero-section" aria-labelledby="home-title">
+        <h1 id="home-title">Добро пожаловать в TechHub</h1>
         <p className="hero-subtitle">
-          Ваш надежный интернет-магазин электроники и гаджетов
+          Интернет-магазин электроники, доработанный под требования доступности уровня AA.
         </p>
-      </div>
+      </section>
 
-      <div className="features-grid">
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">1</div>
-          <h3>Широкий ассортимент</h3>
-          <p>Более 1000 товаров от ведущих производителей</p>
+      <section aria-labelledby="benefits-title">
+        <h2 id="benefits-title">Что улучшено в интерфейсе</h2>
+        <p className="section-intro">Пользователь получает предсказуемую навигацию, достаточный контраст и понятные формы на всех ключевых страницах.</p>
+        <div className="features-grid" role="list">
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">1</div>
+            <h3>Последовательная структура</h3>
+            <p>Заголовки, списки и связи между полями передают смысл без опоры только на визуальное оформление.</p>
+          </article>
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">2</div>
+            <h3>Удобные формы</h3>
+            <p>Ошибки озвучиваются, поля имеют подсказки и поддерживают автозаполнение.</p>
+          </article>
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">3</div>
+            <h3>Работа с клавиатуры</h3>
+            <p>Каталог, корзина и оформление заказа не содержат клавиатурных ловушек.</p>
+          </article>
+          <article className="feature-card" role="listitem">
+            <div className="feature-icon" aria-hidden="true">4</div>
+            <h3>Защита от ошибок</h3>
+            <p>Перед отправкой заказа покупатель проверяет данные и выбранный способ оплаты.</p>
+          </article>
         </div>
+      </section>
 
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">2</div>
-          <h3>Быстрая доставка</h3>
-          <p>Доставка по всей России от 1 дня</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">3</div>
-          <h3>Гарантия качества</h3>
-          <p>Официальная гарантия на все товары</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon" aria-hidden="true">4</div>
-          <h3>Удобная оплата</h3>
-          <p>Различные способы оплаты</p>
-        </div>
-      </div>
-
-      <div className="cta-section">
-        <h2>Начните покупки прямо сейчас!</h2>
+      <section className="cta-section" aria-labelledby="cta-title">
+        <h2 id="cta-title">Продолжить работу</h2>
         <div className="cta-buttons">
           <Link to="/products" className="btn btn-primary">
-            Перейти в каталог
+            Открыть каталог
           </Link>
           {!isAuthenticated && (
             <Link to="/register" className="btn btn-secondary">
@@ -56,20 +57,15 @@ function HomePage() {
             </Link>
           )}
         </div>
-      </div>
+      </section>
 
-      <div className="info-section">
-        <h3>О проекте</h3>
-        <p>
-          Это демонстрационное приложение интернет-магазина, разработанное с
-          использованием <strong>Redux Toolkit</strong> для
-          управления состоянием.
-        </p>
+      <section className="info-section" aria-labelledby="about-project-title">
+        <h2 id="about-project-title">О проекте</h2>
+        <p>Этот вариант лабораторной работы реализован на React, Redux Toolkit и React Router.</p>
         <p className="tech-stack">
-          <strong>Технологии:</strong> React, Redux Toolkit, React Router,
-          Express
+          <strong>Технологии:</strong> React, Redux Toolkit, React Router, Express.
         </p>
-      </div>
+      </section>
     </div>
   );
 }

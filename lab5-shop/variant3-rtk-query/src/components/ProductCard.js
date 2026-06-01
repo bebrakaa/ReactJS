@@ -10,7 +10,7 @@ function ProductCard({ product }) {
   };
 
   return (
-    <article className="product-card" aria-labelledby={`product-title-${product.id}`}>
+    <article className="product-card" aria-labelledby={`product-title-${product.id}`} role="listitem">
       <div className="product-image-placeholder" aria-hidden="true">
         <span className="product-category">{product.category}</span>
       </div>
@@ -23,14 +23,14 @@ function ProductCard({ product }) {
 
         <div className="product-footer">
           <div className="product-price-section">
-            <span className="product-price">
+            <span className="product-price" aria-label={`Цена ${product.price.toLocaleString("ru-RU")} рублей`}>
               {product.price.toLocaleString("ru-RU")} ₽
             </span>
             <div className="product-meta">
-              <span className="product-rating" aria-label={`Рейтинг ${product.rating}`}>
+              <span className="product-rating" aria-label={`Рейтинг товара ${product.rating} из 5`}>
                 ⭐ {product.rating}
               </span>
-              <span className="product-stock">
+              <span className="product-stock" aria-live="polite">
                 {product.stock > 0 ? `В наличии: ${product.stock}` : "Нет в наличии"}
               </span>
             </div>

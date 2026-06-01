@@ -16,6 +16,9 @@ function RegisterPage() {
 
   useEffect(() => {
     document.title = "Регистрация - TechHub";
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) {
       navigate("/products");
     }
@@ -33,9 +36,9 @@ function RegisterPage() {
     if (emailError) nextErrors.email = emailError;
     if (passwordError) nextErrors.password = passwordError;
     if (!confirmPassword) {
-      nextErrors.confirmPassword = "Подтверждение пароля обязательно";
+      nextErrors.confirmPassword = "Подтвердите пароль.";
     } else if (password !== confirmPassword) {
-      nextErrors.confirmPassword = "Пароли не совпадают";
+      nextErrors.confirmPassword = "Пароли не совпадают.";
     }
 
     setErrors(nextErrors);
@@ -48,11 +51,17 @@ function RegisterPage() {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h2>Регистрация</h2>
+        <h1>Регистрация</h1>
+        <p className="section-intro">Создайте аккаунт, чтобы управлять заказами и быстрее оформлять покупки.</p>
 
-        {error && <div className="error-message" role="alert">{error}</div>}
+        {error && (
+          <div className="form-error-summary" role="alert">
+            <p><strong>Ошибка регистрации.</strong></p>
+            <p>{error}</p>
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" noValidate aria-busy={loading}>
           <div className="form-group">
             <label htmlFor="register-name">Имя *</label>
             <input
@@ -65,14 +74,14 @@ function RegisterPage() {
               }}
               placeholder="Иван Иванов"
               className={errors.name ? "error" : ""}
-              aria-required="true"
               aria-invalid={Boolean(errors.name)}
-              aria-describedby={errors.name ? "name-error" : undefined}
+              aria-describedby={errors.name ? "register-name-error" : "register-name-hint"}
               autoComplete="name"
               disabled={loading}
               maxLength={100}
             />
-            {errors.name && <span id="name-error" className="error-text" role="alert">{errors.name}</span>}
+            <span id="register-name-hint" className="field-hint">Имя поможет отличать ваш профиль в интерфейсе магазина.</span>
+            {errors.name && <span id="register-name-error" className="error-text" role="alert">{errors.name}</span>}
           </div>
 
           <div className="form-group">
@@ -87,13 +96,13 @@ function RegisterPage() {
               }}
               placeholder="example@mail.com"
               className={errors.email ? "error" : ""}
-              aria-required="true"
               aria-invalid={Boolean(errors.email)}
-              aria-describedby={errors.email ? "email-error" : undefined}
+              aria-describedby={errors.email ? "register-email-error" : "register-email-hint"}
               autoComplete="email"
               disabled={loading}
             />
-            {errors.email && <span id="email-error" className="error-text" role="alert">{errors.email}</span>}
+            <span id="register-email-hint" className="field-hint">Этот адрес используется для входа в систему.</span>
+            {errors.email && <span id="register-email-error" className="error-text" role="alert">{errors.email}</span>}
           </div>
 
           <div className="form-group">
@@ -108,14 +117,14 @@ function RegisterPage() {
               }}
               placeholder="Минимум 4 символа"
               className={errors.password ? "error" : ""}
-              aria-required="true"
               aria-invalid={Boolean(errors.password)}
-              aria-describedby={errors.password ? "password-error" : undefined}
+              aria-describedby={errors.password ? "register-password-error" : "register-password-hint"}
               autoComplete="new-password"
               disabled={loading}
               maxLength={50}
             />
-            {errors.password && <span id="password-error" className="error-text" role="alert">{errors.password}</span>}
+            <span id="register-password-hint" className="field-hint">Не используйте слишком простой пароль для демонстрации хорошей практики.</span>
+            {errors.password && <span id="register-password-error" className="error-text" role="alert">{errors.password}</span>}
           </div>
 
           <div className="form-group">
@@ -126,21 +135,19 @@ function RegisterPage() {
               value={confirmPassword}
               onChange={(event) => {
                 setConfirmPassword(event.target.value);
-                if (errors.confirmPassword) {
-                  setErrors({ ...errors, confirmPassword: "" });
-                }
+                if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: "" });
               }}
               placeholder="Повторите пароль"
               className={errors.confirmPassword ? "error" : ""}
-              aria-required="true"
               aria-invalid={Boolean(errors.confirmPassword)}
-              aria-describedby={errors.confirmPassword ? "confirm-password-error" : undefined}
+              aria-describedby={errors.confirmPassword ? "register-confirm-password-error" : "register-confirm-password-hint"}
               autoComplete="new-password"
               disabled={loading}
               maxLength={50}
             />
+            <span id="register-confirm-password-hint" className="field-hint">Повторный ввод помогает предотвратить ошибочную регистрацию.</span>
             {errors.confirmPassword && (
-              <span id="confirm-password-error" className="error-text" role="alert">{errors.confirmPassword}</span>
+              <span id="register-confirm-password-error" className="error-text" role="alert">{errors.confirmPassword}</span>
             )}
           </div>
 
@@ -150,7 +157,7 @@ function RegisterPage() {
         </form>
 
         <div className="auth-link">
-          Уже есть аккаунт? <Link to="/login">Войти</Link>
+          Уже есть аккаунт? <Link to="/login">Перейти ко входу</Link>
         </div>
       </div>
     </div>

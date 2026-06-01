@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useCreateOrderMutation } from "../redux/api/ordersApi";
+import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../redux/slices/cartSlice";
+import { useCreateOrderMutation } from "../redux/api/ordersApi";
 import {
+  validateAddress,
+  validateCity,
+  validateEmail,
   validateName,
   validatePhone,
-  validateEmail,
-  validateCity,
-  validateAddress,
   validatePostalCode,
   formatPhone,
   formatPostalCode,
@@ -18,10 +18,10 @@ function CheckoutPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, totalAmount } = useSelector((state) => state.cart);
-  
   const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -32,18 +32,10 @@ function CheckoutPage() {
     paymentMethod: "card",
   });
 
-  const [errors, setErrors] = useState({});
   const stepHeadingRef = useRef(null);
 
-  const stepNames = {
-    1: "Контактные данные",
-    2: "Адрес доставки",
-    3: "Способ оплаты",
-    4: "Подтверждение заказа",
-  };
-
   useEffect(() => {
-    document.title = `${stepNames[step]} - Оформление заказа - TechHub`;
+    document.title = `Оформление заказа - шаг ${step} - TechHub`;
   }, [step]);
 
   useEffect(() => {
@@ -52,76 +44,81 @@ function CheckoutPage() {
     }
   }, [items.length, navigate]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    
-    let formattedValue = value;
-    
-    // Форматирование телефона
+  const focusStepHeading = () => {
+    setTimeout(() => stepHeadingRef.current?.focus(), 50);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    let nextValue = value;
+
     if (name === "phone") {
-      formattedValue = formatPhone(value);
+      nextValue = formatPhone(value);
     }
-    
-    // Форматирование индекса
+
     if (name === "postalCode") {
-      formattedValue = formatPostalCode(value);
+      nextValue = formatPostalCode(value);
     }
-    
-    setFormData({
-      ...formData,
-      [name]: formattedValue,
-    });
-    
+
+    setFormData((previousState) => ({
+      ...previousState,
+      [name]: nextValue,
+    }));
+
     if (errors[name]) {
-      setErrors({
-        ...errors,
+      setErrors((previousState) => ({
+        ...previousState,
         [name]: "",
-      });
+      }));
     }
   };
 
   const validateStep1 = () => {
-    const newErrors = {};
-    
-    const nameError = validateName(formData.fullName);
-    if (nameError) newErrors.fullName = nameError;
-    
-    const phoneError = validatePhone(formData.phone);
-    if (phoneError) newErrors.phone = phoneError;
-    
-    const emailError = validateEmail(formData.email);
-    if (emailError) newErrors.email = emailError;
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const nextErrors = {};
+
+    nextErrors.fullName = validateName(formData.fullName) || "";
+    nextErrors.phone = validatePhone(formData.phone) || "";
+    nextErrors.email = validateEmail(formData.email) || "";
+
+    const filteredErrors = Object.fromEntries(
+      Object.entries(nextErrors).filter(([, value]) => value)
+    );
+    setErrors(filteredErrors);
+
+    return Object.keys(filteredErrors).length === 0;
   };
 
   const validateStep2 = () => {
-    const newErrors = {};
-    
-    const cityError = validateCity(formData.city);
-    if (cityError) newErrors.city = cityError;
-    
-    const addressError = validateAddress(formData.address);
-    if (addressError) newErrors.address = addressError;
-    
-    const postalCodeError = validatePostalCode(formData.postalCode);
-    if (postalCodeError) newErrors.postalCode = postalCodeError;
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const nextErrors = {};
+
+    nextErrors.city = validateCity(formData.city) || "";
+    nextErrors.address = validateAddress(formData.address) || "";
+    nextErrors.postalCode = validatePostalCode(formData.postalCode) || "";
+
+    const filteredErrors = Object.fromEntries(
+      Object.entries(nextErrors).filter(([, value]) => value)
+    );
+    setErrors(filteredErrors);
+
+    return Object.keys(filteredErrors).length === 0;
   };
 
   const handleNext = () => {
-    if (step === 1 && !validateStep1()) return;
-    if (step === 2 && !validateStep2()) return;
-    setStep(step + 1);
-    setTimeout(() => stepHeadingRef.current?.focus(), 50);
+    if (step === 1 && !validateStep1()) {
+      return;
+    }
+
+    if (step === 2 && !validateStep2()) {
+      return;
+    }
+
+    setStep((currentStep) => currentStep + 1);
+    focusStepHeading();
   };
 
   const handleBack = () => {
-    setStep(step - 1);
-    setTimeout(() => stepHeadingRef.current?.focus(), 50);
+    setStep((currentStep) => currentStep - 1);
+    focusStepHeading();
   };
 
   const handleSubmit = async () => {
@@ -142,13 +139,9 @@ function CheckoutPage() {
       paymentMethod: formData.paymentMethod,
     };
 
-    try {
-      await createOrder(orderData).unwrap();
-      dispatch(clearCart());
-      navigate("/orders");
-    } catch (err) {
-      console.error("Failed to create order:", err);
-    }
+    await createOrder(orderData).unwrap();
+    dispatch(clearCart());
+    navigate("/orders");
   };
 
   if (items.length === 0) {
@@ -156,32 +149,52 @@ function CheckoutPage() {
   }
 
   return (
-    <div className="container">
+    <div className="container" aria-busy={isLoading}>
       <h1>Оформление заказа</h1>
+      <p className="section-intro">
+        Процесс состоит из четырех шагов. На последнем шаге вы сможете проверить все данные перед отправкой заказа.
+      </p>
 
-      <ul className="checkout-progress" role="list" aria-label="Этапы оформления заказа">
-        <li className={`progress-step ${step >= 1 ? "active" : ""}`} role="listitem" aria-current={step === 1 ? "step" : undefined}>
-          <span className="step-number" aria-hidden="true">1</span>
-          <span className="step-label">Контактные данные</span>
-        </li>
-        <li className={`progress-step ${step >= 2 ? "active" : ""}`} role="listitem" aria-current={step === 2 ? "step" : undefined}>
-          <span className="step-number" aria-hidden="true">2</span>
-          <span className="step-label">Адрес доставки</span>
-        </li>
-        <li className={`progress-step ${step >= 3 ? "active" : ""}`} role="listitem" aria-current={step === 3 ? "step" : undefined}>
-          <span className="step-number" aria-hidden="true">3</span>
-          <span className="step-label">Способ оплаты</span>
-        </li>
-        <li className={`progress-step ${step >= 4 ? "active" : ""}`} role="listitem" aria-current={step === 4 ? "step" : undefined}>
-          <span className="step-number" aria-hidden="true">4</span>
-          <span className="step-label">Подтверждение</span>
-        </li>
-      </ul>
+      <div className="checkout-progress" role="list" aria-label="Этапы оформления заказа">
+        {[
+          "Контактные данные",
+          "Адрес доставки",
+          "Способ оплаты",
+          "Подтверждение",
+        ].map((label, index) => {
+          const stepNumber = index + 1;
+          return (
+            <div
+              key={label}
+              className={`progress-step ${step >= stepNumber ? "active" : ""}`}
+              role="listitem"
+              aria-current={step === stepNumber ? "step" : undefined}
+            >
+              <span className="step-number" aria-hidden="true">
+                {stepNumber}
+              </span>
+              <span className="step-label">{label}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <p className="page-status" aria-live="polite" role="status">
+        Текущий шаг: {step} из 4.
+      </p>
 
       <div className="checkout-content">
+        {(step === 1 || step === 2) && Object.keys(errors).length > 0 ? (
+          <div className="form-error-summary" role="alert">
+            Исправьте ошибки в форме перед переходом к следующему шагу.
+          </div>
+        ) : null}
+
         {step === 1 && (
-          <div className="checkout-step">
-            <h2 ref={stepHeadingRef} tabIndex={-1}>Контактные данные</h2>
+          <section className="checkout-step" aria-labelledby="checkout-step-heading">
+            <h2 id="checkout-step-heading" ref={stepHeadingRef} tabIndex={-1}>
+              Контактные данные
+            </h2>
             <div className="form-group">
               <label htmlFor="checkout-full-name">ФИО *</label>
               <input
@@ -192,13 +205,16 @@ function CheckoutPage() {
                 onChange={handleInputChange}
                 placeholder="Иванов Иван Иванович"
                 className={errors.fullName ? "error" : ""}
-                aria-required="true"
                 aria-invalid={Boolean(errors.fullName)}
                 aria-describedby={errors.fullName ? "fullName-error" : undefined}
                 autoComplete="name"
                 maxLength={100}
               />
-              {errors.fullName && <span id="fullName-error" className="error-text" role="alert">{errors.fullName}</span>}
+              {errors.fullName ? (
+                <span id="fullName-error" className="error-text" role="alert">
+                  {errors.fullName}
+                </span>
+              ) : null}
             </div>
             <div className="form-group">
               <label htmlFor="checkout-phone">Телефон *</label>
@@ -210,12 +226,18 @@ function CheckoutPage() {
                 onChange={handleInputChange}
                 placeholder="+7 (999) 123-45-67"
                 className={errors.phone ? "error" : ""}
-                aria-required="true"
                 aria-invalid={Boolean(errors.phone)}
-                aria-describedby={errors.phone ? "phone-error" : undefined}
+                aria-describedby={errors.phone ? "phone-error" : "phone-hint"}
                 autoComplete="tel"
               />
-              {errors.phone && <span id="phone-error" className="error-text" role="alert">{errors.phone}</span>}
+              <span id="phone-hint" className="field-hint">
+                Укажите номер телефона для связи по заказу.
+              </span>
+              {errors.phone ? (
+                <span id="phone-error" className="error-text" role="alert">
+                  {errors.phone}
+                </span>
+              ) : null}
             </div>
             <div className="form-group">
               <label htmlFor="checkout-email">Email *</label>
@@ -227,19 +249,24 @@ function CheckoutPage() {
                 onChange={handleInputChange}
                 placeholder="example@mail.com"
                 className={errors.email ? "error" : ""}
-                aria-required="true"
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={errors.email ? "email-error" : undefined}
                 autoComplete="email"
               />
-              {errors.email && <span id="email-error" className="error-text" role="alert">{errors.email}</span>}
+              {errors.email ? (
+                <span id="email-error" className="error-text" role="alert">
+                  {errors.email}
+                </span>
+              ) : null}
             </div>
-          </div>
+          </section>
         )}
 
         {step === 2 && (
-          <div className="checkout-step">
-            <h2 ref={stepHeadingRef} tabIndex={-1}>Адрес доставки</h2>
+          <section className="checkout-step" aria-labelledby="checkout-step-heading">
+            <h2 id="checkout-step-heading" ref={stepHeadingRef} tabIndex={-1}>
+              Адрес доставки
+            </h2>
             <div className="form-group">
               <label htmlFor="checkout-city">Город *</label>
               <input
@@ -250,13 +277,16 @@ function CheckoutPage() {
                 onChange={handleInputChange}
                 placeholder="Москва"
                 className={errors.city ? "error" : ""}
-                aria-required="true"
                 aria-invalid={Boolean(errors.city)}
                 aria-describedby={errors.city ? "city-error" : undefined}
                 autoComplete="address-level2"
                 maxLength={100}
               />
-              {errors.city && <span id="city-error" className="error-text" role="alert">{errors.city}</span>}
+              {errors.city ? (
+                <span id="city-error" className="error-text" role="alert">
+                  {errors.city}
+                </span>
+              ) : null}
             </div>
             <div className="form-group">
               <label htmlFor="checkout-address">Адрес *</label>
@@ -268,13 +298,16 @@ function CheckoutPage() {
                 onChange={handleInputChange}
                 placeholder="Улица, дом, квартира"
                 className={errors.address ? "error" : ""}
-                aria-required="true"
                 aria-invalid={Boolean(errors.address)}
                 aria-describedby={errors.address ? "address-error" : undefined}
                 autoComplete="street-address"
                 maxLength={200}
               />
-              {errors.address && <span id="address-error" className="error-text" role="alert">{errors.address}</span>}
+              {errors.address ? (
+                <span id="address-error" className="error-text" role="alert">
+                  {errors.address}
+                </span>
+              ) : null}
             </div>
             <div className="form-group">
               <label htmlFor="checkout-postal-code">Индекс *</label>
@@ -286,71 +319,99 @@ function CheckoutPage() {
                 onChange={handleInputChange}
                 placeholder="123456"
                 className={errors.postalCode ? "error" : ""}
-                aria-required="true"
                 aria-invalid={Boolean(errors.postalCode)}
                 aria-describedby={errors.postalCode ? "postalCode-error" : undefined}
                 autoComplete="postal-code"
+                inputMode="numeric"
                 maxLength={6}
               />
-              {errors.postalCode && <span id="postalCode-error" className="error-text" role="alert">{errors.postalCode}</span>}
+              {errors.postalCode ? (
+                <span id="postalCode-error" className="error-text" role="alert">
+                  {errors.postalCode}
+                </span>
+              ) : null}
             </div>
-          </div>
+          </section>
         )}
 
         {step === 3 && (
-          <div className="checkout-step">
-            <h2 ref={stepHeadingRef} tabIndex={-1}>Способ оплаты</h2>
-            <div className="payment-methods">
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="card"
-                  checked={formData.paymentMethod === "card"}
-                  onChange={handleInputChange}
-                />
-                <span>Банковская карта</span>
-              </label>
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="cash"
-                  checked={formData.paymentMethod === "cash"}
-                  onChange={handleInputChange}
-                />
-                <span>Наличными при получении</span>
-              </label>
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="online"
-                  checked={formData.paymentMethod === "online"}
-                  onChange={handleInputChange}
-                />
-                <span>Онлайн-оплата</span>
-              </label>
-            </div>
-          </div>
+          <section className="checkout-step" aria-labelledby="checkout-step-heading">
+            <h2 id="checkout-step-heading" ref={stepHeadingRef} tabIndex={-1}>
+              Способ оплаты
+            </h2>
+            <fieldset className="payment-fieldset">
+              <legend>Выберите подходящий способ оплаты</legend>
+              <div className="payment-methods">
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="card"
+                    checked={formData.paymentMethod === "card"}
+                    onChange={handleInputChange}
+                  />
+                  <span>Банковская карта</span>
+                </label>
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash"
+                    checked={formData.paymentMethod === "cash"}
+                    onChange={handleInputChange}
+                  />
+                  <span>Наличными при получении</span>
+                </label>
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="online"
+                    checked={formData.paymentMethod === "online"}
+                    onChange={handleInputChange}
+                  />
+                  <span>Онлайн-оплата</span>
+                </label>
+              </div>
+            </fieldset>
+          </section>
         )}
 
         {step === 4 && (
-          <div className="checkout-step">
-            <h2 ref={stepHeadingRef} tabIndex={-1}>Подтверждение заказа</h2>
+          <section className="checkout-step" aria-labelledby="checkout-step-heading">
+            <h2 id="checkout-step-heading" ref={stepHeadingRef} tabIndex={-1}>
+              Подтверждение заказа
+            </h2>
             <div className="order-summary-section">
-              <h3>Ваши данные:</h3>
-              <p><strong>ФИО:</strong> {formData.fullName}</p>
-              <p><strong>Телефон:</strong> {formData.phone}</p>
-              <p><strong>Email:</strong> {formData.email}</p>
-              <p><strong>Адрес:</strong> {formData.city}, {formData.address}, {formData.postalCode}</p>
-              <p><strong>Оплата:</strong> {formData.paymentMethod === "card" ? "Банковская карта" : formData.paymentMethod === "cash" ? "Наличными" : "Онлайн"}</p>
+              <h3>Проверьте контактные данные и адрес</h3>
+              <p>
+                <strong>ФИО:</strong> {formData.fullName}
+              </p>
+              <p>
+                <strong>Телефон:</strong> {formData.phone}
+              </p>
+              <p>
+                <strong>Email:</strong> {formData.email}
+              </p>
+              <p>
+                <strong>Адрес:</strong> {formData.city}, {formData.address}, {formData.postalCode}
+              </p>
+              <p>
+                <strong>Оплата:</strong>{" "}
+                {formData.paymentMethod === "card"
+                  ? "Банковская карта"
+                  : formData.paymentMethod === "cash"
+                    ? "Наличными при получении"
+                    : "Онлайн-оплата"}
+              </p>
             </div>
             <div className="order-items-summary">
-              <h3>Товары в заказе:</h3>
+              <h3>Товары в заказе</h3>
               {items.map((item) => (
                 <div key={item.id} className="summary-item">
-                  <span>{item.title} x{item.quantity}</span>
+                  <span>
+                    {item.title} x{item.quantity}
+                  </span>
                   <span>{(item.price * item.quantity).toLocaleString("ru-RU")} ₽</span>
                 </div>
               ))}
@@ -359,15 +420,15 @@ function CheckoutPage() {
                 <strong>{totalAmount.toLocaleString("ru-RU")} ₽</strong>
               </div>
             </div>
-          </div>
+          </section>
         )}
 
         <div className="checkout-actions">
-          {step > 1 && (
+          {step > 1 ? (
             <button type="button" onClick={handleBack} className="btn btn-secondary" disabled={isLoading}>
               Назад
             </button>
-          )}
+          ) : null}
           {step < 4 ? (
             <button type="button" onClick={handleNext} className="btn btn-primary">
               Далее

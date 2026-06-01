@@ -21,7 +21,7 @@ function CartItem({ item }) {
   };
 
   return (
-    <article className="cart-item" aria-labelledby={`cart-item-title-${item.id}`}>
+    <article className="cart-item" aria-labelledby={`cart-item-title-${item.id}`} role="listitem">
       <div className="cart-item-image-placeholder" aria-hidden="true" />
 
       <div className="cart-item-info">
@@ -32,7 +32,7 @@ function CartItem({ item }) {
       </div>
 
       <div className="cart-item-controls">
-        <div className="quantity-controls">
+        <div className="quantity-controls" role="group" aria-label={`Изменение количества товара ${item.title}`}>
           <button
             type="button"
             onClick={() => handleQuantityChange(item.quantity - 1)}
@@ -40,7 +40,7 @@ function CartItem({ item }) {
             disabled={item.quantity <= 1}
             aria-label={`Уменьшить количество товара ${item.title}`}
           >
-            -
+            −
           </button>
           <input
             className="quantity-input"
@@ -50,6 +50,7 @@ function CartItem({ item }) {
             onChange={handleQuantityInput}
             aria-label={`Количество товара ${item.title}`}
             aria-describedby={quantityHelpId}
+            inputMode="numeric"
           />
           <span id={quantityHelpId} className="sr-only">
             Введите количество товара числом не меньше одного.
